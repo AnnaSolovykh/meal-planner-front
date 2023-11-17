@@ -16,7 +16,7 @@ const App = () => {
   },[])
   return (
     <>
-    <SavedMealsList meals={meals}/>
+      <SavedMealsList meals={meals}/>
     </>
   )
 }

@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import { SavedMealType } from "../utils/types";
 import SavedMeal from "./SavedMeal";
 
@@ -7,11 +8,11 @@ type SavedMealsProps = {
 
 const SavedMealsList = ({ meals }: SavedMealsProps) => {
     return (
-        <div>
+        <Box>
             {meals.map(meal => (
                 <SavedMeal key={meal._id} meal={meal}/>
             ))}
-        </div>
+        </Box>
     )
 };
 

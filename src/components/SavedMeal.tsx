@@ -1,3 +1,4 @@
+import { Box, Typography } from "@mui/material";
 import { SavedMealType } from "../utils/types";
 
 type SavedRecipeProps = {
@@ -6,9 +7,9 @@ type SavedRecipeProps = {
 
 const SavedMeal = ({ meal }: SavedRecipeProps) => {
     return (
-        <div>
-            <h3>{meal.title}</h3>
-        </div>
+        <Box>
+            <Typography>{meal.title}</Typography>
+        </Box>
     )
 };
 
