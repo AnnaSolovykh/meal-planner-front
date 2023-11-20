@@ -9,6 +9,19 @@ export const getMeals = () => {
     })
 };
 
+export const createMeal = (meal: SavedMealType) => {
+    return axios.post('http://localhost:4000/api/v1/meals/',
+    {
+        ...meal
+    },
+    {
+        headers: {
+            "Content-Type": "application/json",
+        }
+    }
+    )
+};
+
 export const updateMeal = (mealId: string, meal: SavedMealType) => {
     return axios.patch(`http://localhost:4000/api/v1/meals/${mealId}`, 
         {
