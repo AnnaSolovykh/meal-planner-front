@@ -1,7 +1,7 @@
-import { Box, Checkbox, Typography } from "@mui/material";
-import { SavedMealType } from "../utils/types";
-import { useState } from "react";
-import { updateMeal } from "../utils/fetchData";
+import { Box, Checkbox, Grid, Typography } from '@mui/material';
+import { SavedMealType } from '../utils/types';
+import { useState } from 'react';
+import { updateMeal } from '../utils/fetchData';
 
 type SavedRecipeProps = {
     meal: SavedMealType,
@@ -21,16 +21,22 @@ const SavedMeal = ({ meal }: SavedRecipeProps) => {
     };
 
     return (
-        <Box>
-            <Typography>{meal.title}</Typography>
-            <Typography>{meal.type}</Typography>
-            <Checkbox
-                checked={checked}
-                onChange={handleCheckboxChange}
-                icon={<span style={{ border: '2px solid #ccc', borderRadius: '3px', width: 24, height: 24 }} />}
-                checkedIcon={<span style={{ backgroundColor: '#f50057', borderRadius: '3px', width: 24, height: 24 }} />}
-            />
-        </Box>
+        <Grid container spacing={6} alignItems='center'>
+            <Grid item xs={6}>
+                <Typography>{meal.title}</Typography>
+            </Grid>
+            <Grid item xs={3}>
+                <Typography>{meal.type}</Typography>
+            </Grid>
+            <Grid item xs={3}>
+                <Checkbox
+                    checked={checked}
+                    onChange={handleCheckboxChange}
+                    icon={<span style={{ border: '2px solid #ccc', borderRadius: '3px', width: 24, height: 24 }} />}
+                    checkedIcon={<span style={{ backgroundColor: '#f50057', borderRadius: '3px', width: 24, height: 24 }} />}
+                />
+            </Grid>
+        </Grid>
     )
 };
 

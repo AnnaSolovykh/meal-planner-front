@@ -14,6 +14,7 @@ const App = () => {
         console.log(error)
       })
   },[])
+  
   return (
     <>
       <SavedMealsList meals={meals}/>

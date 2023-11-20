@@ -1,6 +1,6 @@
-import { Box } from "@mui/material";
-import { SavedMealType } from "../utils/types";
-import SavedMeal from "./SavedMeal";
+import { Box } from '@mui/material';
+import { SavedMealType } from '../utils/types';
+import SavedMeal from './SavedMeal';
 
 type SavedMealsProps = {
     meals: Array<SavedMealType>
@@ -8,10 +8,12 @@ type SavedMealsProps = {
 
 const SavedMealsList = ({ meals }: SavedMealsProps) => {
     return (
-        <Box>
-            {meals.map(meal => (
-                <SavedMeal key={meal._id} meal={meal}/>
-            ))}
+        <Box display="flex" justifyContent="center" alignItems="center" sx={{ width: '100vw', height: '100vh' }}>
+            <Box sx={{ width: 500, maxWidth: '100%' }}> {/* Set your desired fixed width here */}
+                {meals.map(meal => (
+                    <SavedMeal key={meal._id} meal={meal}/>
+                ))}
+            </Box>
         </Box>
     )
 };
