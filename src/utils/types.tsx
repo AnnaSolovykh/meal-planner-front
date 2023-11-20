@@ -1,6 +1,6 @@
 export type SavedMealType = {
     createdAt: string,
-    favorite: boolean,
+    isFavorite: boolean,
     title: string,
     type: string,
     _id: string
