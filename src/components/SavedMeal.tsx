@@ -1,6 +1,6 @@
-import { Box, Checkbox, Grid, Typography } from '@mui/material';
+import { Checkbox, Grid, Typography } from '@mui/material';
 import { SavedMealType } from '../utils/types';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { updateMeal } from '../utils/fetchData';
 
 type SavedRecipeProps = {
@@ -8,13 +8,13 @@ type SavedRecipeProps = {
 };
 
 const SavedMeal = ({ meal }: SavedRecipeProps) => {
-    const [checked, setChecked] = useState(meal.isFavorite)
+    const [checked, setChecked] = useState(meal.isFavorite);
 
-    const handleCheckboxChange = async (event: { target: { checked: boolean; }; }) => {
+    const handleCheckboxChange = async (event: ChangeEvent<HTMLInputElement>)  => {
         const newCheckedStatus = event.target.checked;
         setChecked(newCheckedStatus);
         try {
-            await updateMeal(meal._id, { ...meal, isFavorite: newCheckedStatus });
+            await updateMeal(meal._id ?? '', { ...meal, isFavorite: newCheckedStatus });
         } catch (error) {
             console.error('Error updating meal:', error);
         }
