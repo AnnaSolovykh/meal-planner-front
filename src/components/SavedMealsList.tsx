@@ -8,8 +8,8 @@ type SavedMealsProps = {
 
 const SavedMealsList = ({ meals }: SavedMealsProps) => {
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" sx={{ width: '100vw', height: '100vh' }}>
-            <Box sx={{ width: 500, maxWidth: '100%' }}> {/* Set your desired fixed width here */}
+        <Box display='flex' justifyContent='center' alignItems='center' sx={{ width: '100vw', height: '100vh' }}>
+            <Box sx={{ width: 500, maxWidth: '100%' }}> 
                 {meals.map(meal => (
                     <SavedMeal key={meal._id} meal={meal}/>
                 ))}

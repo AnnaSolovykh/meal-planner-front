@@ -1,6 +1,6 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { SavedMealType } from "../utils/types";
+import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { SavedMealType } from '../utils/types';
 
 type AddMealFormProps = {
     handleCreateMeal: (meal: SavedMealType) => void;
@@ -31,32 +31,32 @@ const AddMealForm = ({ handleCreateMeal }: AddMealFormProps ) => {
 
     return (
         <form onSubmit={addMeal}>
-            <FormControl fullWidth margin="normal">
+            <FormControl fullWidth margin='normal'>
                 <TextField
-                    label="Title"
-                    variant="outlined"
+                    label='Title'
+                    variant='outlined'
                     value={title}
                     onChange={createTitle}
                 />
             </FormControl>
-            <FormControl fullWidth margin="normal">
+            <FormControl fullWidth margin='normal'>
                 <InputLabel>Type</InputLabel>
                 <Select
                     value={type}
-                    label="type"
+                    label='type'
                     onChange={createType}
                 >
-                    <MenuItem value="">Select a meal type</MenuItem>
-                    <MenuItem value="breakfast">Breakfast</MenuItem>
-                    <MenuItem value="lunch">Lunch</MenuItem>
-                    <MenuItem value="dinner">Dinner</MenuItem>
-                    <MenuItem value="snack">Snack</MenuItem>
+                    <MenuItem value=''>Select a meal type</MenuItem>
+                    <MenuItem value='breakfast'>Breakfast</MenuItem>
+                    <MenuItem value='lunch'>Lunch</MenuItem>
+                    <MenuItem value='dinner'>Dinner</MenuItem>
+                    <MenuItem value='snack'>Snack</MenuItem>
                 </Select>
             </FormControl>
             <Button 
-                type="submit" 
-                variant="contained" 
-                color="primary" 
+                type='submit' 
+                variant='contained' 
+                color='primary' 
                 sx={{ margin: 'normal' }} 
             >
                 Add Meal

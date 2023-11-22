@@ -3,6 +3,7 @@ import { createMeal, getMeals } from '../utils/fetchData';
 import SavedMealsList from './SavedMealsList';
 import AddMealForm from './AddMealForm';
 import { SavedMealType } from '../utils/types';
+import { Box, Typography } from '@mui/material';
 
 const App = () => {
   const [meals, setMeals] = useState<SavedMealType[]>([]);
@@ -36,10 +37,13 @@ const App = () => {
   };
 
   return (
-    <>
+    <Box display='flex' flexDirection='column' alignItems='center'>
+      <Typography variant='h3' component='h3'>
+        My Meals Options
+      </Typography>
       <AddMealForm handleCreateMeal={handleCreateMeal}/>
       <SavedMealsList meals={meals}/>
-    </>
+    </Box>
   )
 }
 
