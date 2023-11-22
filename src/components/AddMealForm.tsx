@@ -30,7 +30,7 @@ const AddMealForm = ({ handleCreateMeal }: AddMealFormProps ) => {
     };
 
     return (
-        <form onSubmit={addMeal}>
+        <form onSubmit={addMeal} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             <FormControl fullWidth margin='normal'>
                 <TextField
                     label='Title'

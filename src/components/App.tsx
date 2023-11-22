@@ -37,7 +37,7 @@ const App = () => {
   };
 
   return (
-    <Box display='flex' flexDirection='column' alignItems='center'>
+    <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center' sx={{ width: '100vw', height: '100vh' }}>
       <Typography variant='h3' component='h3'>
         My Meals Options
       </Typography>
