@@ -1,12 +1,13 @@
 import axios from 'axios';
-import { SavedMealType } from './types';
+import { MealsType, SavedMealType } from './types';
 
-export const getMeals = () => {
-    return axios.get('http://localhost:4000/api/v1/meals/', {
+export const getMeals = (currentPage: number, limit: number): Promise<MealsType> => {
+    return axios.get(`http://localhost:4000/api/v1/meals?page=${currentPage}&limit=${limit}`, {
         headers: {
             "Content-Type": "application/json",
         }
     })
+    .then(response => response.data as MealsType);
 };
 
 export const createMeal = (meal: SavedMealType) => {

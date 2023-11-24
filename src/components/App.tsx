@@ -2,47 +2,62 @@ import { useEffect, useState } from 'react'
 import { createMeal, getMeals } from '../utils/fetchData';
 import SavedMealsList from './SavedMealsList';
 import AddMealForm from './AddMealForm';
-import { SavedMealType } from '../utils/types';
-import { Box, Typography } from '@mui/material';
+import { MealsType, SavedMealType } from '../utils/types';
+import { Box, Pagination, Typography } from '@mui/material';
 
 const App = () => {
-  const [meals, setMeals] = useState<SavedMealType[]>([]);
+  const [mealData, setMealData] = useState<MealsType>({ 
+    totalPages: 0, 
+    currentPage: 1, 
+    meals: [] 
+  });
+  const limit = 5;
 
   useEffect(()=> {
-    getMeals()
+    getMeals(mealData.currentPage, limit)
       .then(response => {
-        setMeals(response.data.meals);
+        setMealData({
+          ...mealData,
+          meals: response.meals,
+          totalPages: response.totalPages,
+          currentPage: response.currentPage
+        });
       })
       .catch(error => {
         console.log(error)
       })
-  },[])
+    }, [mealData.currentPage]);
 
   const handleCreateMeal = (meal: SavedMealType) => {
     createMeal(meal)
-      .then (response => {
-        const meal = response.data.meal;
-        const newMeal = {
-          _id: meal._id,
-          isFavorite: meal.isFavorite,
-          title: meal.title,
-          type: meal.type,
-          createdAt: meal.createdAt
-        }
-        setMeals([...meals, newMeal]);
+      .then(response => {
+        const newMeal = response.data.meal;
+        setMealData({
+          ...mealData,
+          meals: [...mealData.meals, newMeal]
+        });
       })
-      .catch( error => {
+      .catch(error => {
         console.log(error);
-      })
+      });
   };
-
+  
+  const handlePageChange = (_: unknown, value: number) => {
+    setMealData({ ...mealData, currentPage: value });
+  };
+  
   return (
     <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center' sx={{ width: '100vw', height: '100vh' }}>
       <Typography variant='h3' component='h3'>
         My Meals Options
       </Typography>
       <AddMealForm handleCreateMeal={handleCreateMeal}/>
-      <SavedMealsList meals={meals}/>
+      <SavedMealsList meals={mealData.meals}/>
+      <Pagination 
+        count={mealData.totalPages} 
+        page={mealData.currentPage} 
+        onChange={handlePageChange} 
+      />
     </Box>
   )
 }
