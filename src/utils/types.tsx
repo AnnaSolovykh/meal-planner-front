@@ -1,3 +1,9 @@
+export type MealsType = {
+    totalPages: number,
+    currentPage: number,
+    meals: SavedMealType[]
+};
+
 export type SavedMealType = {
     createdAt?: string,
     isFavorite?: boolean,
@@ -5,3 +11,4 @@ export type SavedMealType = {
     type: string,
     _id?: string 
 };
+
