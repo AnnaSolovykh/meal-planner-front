@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { createMeal, getMeals } from '../utils/fetchData';
+import { createMeal, deleteMeal, getMeals } from '../utils/fetchData';
 import SavedMealsList from './SavedMealsList';
 import AddMealForm from './AddMealForm';
 import { MealsType, SavedMealType } from '../utils/types';
@@ -41,6 +41,19 @@ const App = () => {
         console.log(error);
       });
   };
+
+  const handleDeleteMeal = (mealId: string) => {
+    deleteMeal(mealId)
+      .then(() => {
+        setMealsData(prevMealsData => ({
+          ...prevMealsData,
+          meals: prevMealsData.meals.filter(item => item._id !== mealId)
+        }));
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
   
   const handlePageChange = (_: unknown, value: number) => {
     setMealsData({ ...mealsData, currentPage: value });
@@ -52,7 +65,7 @@ const App = () => {
         My Meals Options
       </Typography>
       <AddMealForm handleCreateMeal={handleCreateMeal}/>
-      <SavedMealsList meals={mealsData.meals}/>
+      <SavedMealsList meals={mealsData.meals} handleDeleteMeal={handleDeleteMeal}/>
       <Pagination 
         count={mealsData.totalPages} 
         page={mealsData.currentPage} 
