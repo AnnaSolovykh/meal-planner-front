@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
+import { Box, Pagination, Typography } from '@mui/material';
+import { MealsType, SavedMealType } from '../utils/types';
 import { createMeal, deleteMeal, getMeals } from '../utils/fetchData';
 import SavedMealsList from './SavedMealsList';
 import AddMealForm from './AddMealForm';
-import { MealsType, SavedMealType } from '../utils/types';
-import { Box, Pagination, Typography } from '@mui/material';
 
 const App = () => {
   const [mealsData, setMealsData] = useState<MealsType>({ 

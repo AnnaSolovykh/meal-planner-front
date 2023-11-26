@@ -1,5 +1,5 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
 import { SavedMealType } from '../utils/types';
 
 type AddMealFormProps = {
