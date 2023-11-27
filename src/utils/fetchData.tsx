@@ -1,14 +1,27 @@
 import axios from 'axios';
 import { MealsType, SavedMealType } from './types';
 
-export const getMeals = (currentPage: number, limit: number): Promise<MealsType> => {
-    return axios.get(`http://localhost:4000/api/v1/meals?page=${currentPage}&limit=${limit}`, {
+export const getMeals = (typeFilter: string, titleFilter: string, isFavoriteFilter: boolean, currentPage: number, limit: number): Promise<MealsType> => {
+    let query = `page=${currentPage}&limit=${limit}`;
+
+    if (typeFilter) {
+        query += `&type=${typeFilter}`;
+    }
+    if (titleFilter) {
+        query += `&title=${titleFilter}`;
+    }
+    if (isFavoriteFilter !== undefined) {
+        query += `&isFavorite=${isFavoriteFilter}`;
+    }
+
+    return axios.get(`http://localhost:4000/api/v1/meals?${query}`, {
         headers: {
             'Content-Type': 'application/json',
         }
     })
     .then(response => response.data as MealsType);
 };
+
 
 export const createMeal = (meal: SavedMealType) => {
     return axios.post('http://localhost:4000/api/v1/meals/',
