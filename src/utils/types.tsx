@@ -12,3 +12,8 @@ export type SavedMealType = {
     _id?: string 
 };
 
+export type FilterValuesType = {
+    type: string | undefined,
+    title: string| undefined,
+    isFavorite: boolean,
+};
