@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Box, Pagination, Typography } from '@mui/material';
-import { MealsType, SavedMealType } from '../utils/types';
+import { FilterValuesType, MealsType, SavedMealType } from '../utils/types';
 import { createMeal, deleteMeal, getMeals } from '../utils/fetchData';
 import SavedMealsList from './SavedMealsList';
 import AddMealForm from './AddMealForm';
+import MealFilter from './MealFilter';
 
 const App = () => {
   const [mealsData, setMealsData] = useState<MealsType>({ 
@@ -12,9 +13,14 @@ const App = () => {
     meals: [] 
   });
   const limit = 5;
+  const [filters, setFilters] = useState({
+    typeFilter: '',
+    titleFilter: '',
+    isFavoriteFilter: false 
+  });
 
   useEffect(()=> {
-    getMeals(mealsData.currentPage, limit)
+    getMeals(filters.typeFilter, filters.titleFilter, filters.isFavoriteFilter, mealsData.currentPage, limit)
       .then(response => {
         setMealsData({
           ...mealsData,
@@ -26,7 +32,7 @@ const App = () => {
       .catch(error => {
         console.log(error)
       })
-    }, [mealsData.currentPage]);
+    }, [mealsData.currentPage, filters]);
 
   const handleCreateMeal = (meal: SavedMealType) => {
     createMeal(meal)
@@ -58,9 +64,20 @@ const App = () => {
   const handlePageChange = (_: unknown, value: number) => {
     setMealsData({ ...mealsData, currentPage: value });
   };
+
+  const handleFilterSubmit = (filterValues: FilterValuesType)=> {
+    setFilters({
+      typeFilter: filterValues.type || '',
+      titleFilter: filterValues.title || '',
+      isFavoriteFilter: filterValues.isFavorite
+    });
+    setMealsData({ ...mealsData, currentPage: 1 }); 
+  };
+  
   
   return (
     <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center' sx={{ width: '100vw', height: '100vh' }}>
+      <MealFilter onFilterSubmit={handleFilterSubmit}/> 
       <Typography variant='h3' component='h3'>
         My Meals Options
       </Typography>
