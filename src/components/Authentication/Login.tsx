@@ -1,10 +1,11 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { Container, Paper, Typography } from '@mui/material';
-import { login } from '../../utils/fetchData';
+import { fetchLogin } from '../../utils/fetchData';
+import { useAuth } from '../../utils/AuthProvider';
 
 type LoginState = {
   email: string;
@@ -19,6 +20,8 @@ const Login = () => {
 
   const navigate  = useNavigate();
 
+  const { login } = useAuth();
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setLoginState({ ...loginState, [name]: value });
@@ -26,16 +29,16 @@ const Login = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    login(loginState.email,  loginState.password)
-    .then (response => {
-      localStorage.setItem('jwtToken', response.data.token);
-      localStorage.setItem('user', response.data.user.name);
-      console.log('success')
-      navigate('/');
-    })
-    .catch(error => {
-      console.log(error)
-    })
+    fetchLogin(loginState.email,  loginState.password)
+      .then (response => {
+        const jwtToken = response.data.token;
+        const username = response.data.user.name;
+        login(jwtToken, username);
+        navigate('/');
+      })
+      .catch(error => {
+        console.log(error)
+      })
   };
 
   return (
@@ -70,6 +73,7 @@ const Login = () => {
               label="Email"
               name="email"
               type="email"
+              autoComplete="email"
               value={loginState.email}
               onChange={handleChange}
               margin="normal"
@@ -81,6 +85,7 @@ const Login = () => {
               label="Password"
               name="password"
               type="password"
+              autoComplete="current-password"
               value={loginState.password}
               onChange={handleChange}
               margin="normal"
@@ -88,6 +93,12 @@ const Login = () => {
             <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }} fullWidth>
               Login
             </Button>
+            <Typography variant="body2" color="textSecondary" align="center">
+              <Link to="/register" style={{ textDecoration: 'none' }}>
+                Register{' '}
+              </Link>
+              if you don't have an account
+            </Typography>
           </Box>
         </Paper>
       </Container>
