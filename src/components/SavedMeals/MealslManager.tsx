@@ -6,7 +6,10 @@ import SavedMealsList from './SavedMealsList';
 import AddMealForm from './AddMealForm';
 import MealFilter from './MealFilter';
 
+import { useAuth } from '../../utils/AuthProvider';
+
 const MealsManager = () => {
+  const { isAuthenticated } = useAuth(); 
   const [mealsData, setMealsData] = useState<MealsType>({ 
     totalPages: 0, 
     currentPage: 1, 
@@ -20,6 +23,7 @@ const MealsManager = () => {
   });
 
   useEffect(()=> {
+    if (isAuthenticated) {
     getMeals(filters.typeFilter, filters.titleFilter, filters.isFavoriteFilter, mealsData.currentPage, limit)
       .then(response => {
         setMealsData({
@@ -32,7 +36,8 @@ const MealsManager = () => {
       .catch(error => {
         console.log(error)
       })
-    }, [mealsData.currentPage, filters]);
+    }
+    }, [mealsData.currentPage, filters,isAuthenticated]);
 
   const handleCreateMeal = (meal: SavedMealType) => {
     createMeal(meal)
