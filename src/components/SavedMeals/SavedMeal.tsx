@@ -1,8 +1,8 @@
 import { ChangeEvent, useState } from 'react';
 import { Checkbox, Grid, IconButton, Typography } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { SavedMealType } from '../utils/types';
-import { updateMeal } from '../utils/fetchData';
+import { SavedMealType } from '../../utils/types';
+import { updateMeal } from '../../utils/fetchData';
 
 type SavedRecipeProps = {
     meal: SavedMealType,

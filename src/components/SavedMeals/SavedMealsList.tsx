@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { SavedMealType } from '../utils/types';
+import { SavedMealType } from '../../utils/types';
 import SavedMeal from './SavedMeal';
 
 type SavedMealsProps = {
