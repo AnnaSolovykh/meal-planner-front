@@ -1,10 +1,10 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { Typography, Container, Paper } from '@mui/material';
-import { register } from '../../utils/fetchData';
+import { fetchRegister } from '../../utils/fetchData';
 
 type RegisterFormState = {
   name: string;
@@ -29,7 +29,7 @@ const Register = () => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(registerState)
-    register(registerState.name, registerState.email, registerState.password)
+    fetchRegister(registerState.name, registerState.email, registerState.password)
     .then (() => {
       navigate('/login');
     })
@@ -77,7 +77,7 @@ const Register = () => {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
+              autoComplete="new-password"
               value={registerState.password}
               onChange={handleChange}
             />
@@ -89,6 +89,12 @@ const Register = () => {
             >
               Sign Up
             </Button>
+            <Typography variant="body2" color="textSecondary" align="center">
+              <Link to="/login" style={{ textDecoration: 'none' }}>
+                Sign in{' '}
+              </Link>
+              if you already have an account
+            </Typography>
           </Box>
         </Paper>
       </Container>
