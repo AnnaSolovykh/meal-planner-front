@@ -4,15 +4,16 @@ import SavedMeal from './SavedMeal';
 
 type SavedMealsProps = {
     meals: Array<SavedMealType>,
-    handleDeleteMeal: Function
+    handleDeleteMeal: Function,
+    handleUpdateMeal: Function
 };
 
-const SavedMealsList = ({ meals, handleDeleteMeal }: SavedMealsProps) => {
+const SavedMealsList = ({ meals, handleDeleteMeal, handleUpdateMeal }: SavedMealsProps) => {
     return (
         <Box display='flex' justifyContent='center' alignItems='center'>
             <Box sx={{ width: 500, maxWidth: '100%' }}> 
                 {meals.map(meal => (
-                    <SavedMeal key={meal._id} meal={meal} handleDeleteMeal={handleDeleteMeal}/>
+                    <SavedMeal key={meal._id} meal={meal} handleDeleteMeal={handleDeleteMeal} handleUpdateMeal={handleUpdateMeal}/>
                 ))}
             </Box>
         </Box>

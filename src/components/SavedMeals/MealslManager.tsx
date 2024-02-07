@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Box, Pagination, Typography } from '@mui/material';
 import { FilterValuesType, MealsType, SavedMealType } from '../../utils/types';
-import { createMeal, deleteMeal, getMeals } from '../../utils/fetchData';
+import { createMeal, deleteMeal, getMeals, updateMeal } from '../../utils/fetchData';
 import SavedMealsList from './SavedMealsList';
 import AddMealForm from './AddMealForm';
 import MealFilter from './MealFilter';
@@ -65,6 +65,25 @@ const MealsManager = () => {
         console.log(error);
       });
   };
+
+  const handleUpdateMeal = (mealId: string, updatedMeal: SavedMealType) => {
+    updateMeal(mealId, updatedMeal)
+      .then((response) => {
+        const updatedMealIndex = mealsData.meals.findIndex(
+          (meal) => meal._id === mealId
+        );
+        const updatedMeals = [...mealsData.meals];
+        updatedMeals[updatedMealIndex] = response.data.meal;
+        setMealsData({
+          ...mealsData,
+          meals: updatedMeals,
+        });
+      })
+      .catch((error) => {
+        console.error('Error updating meal:', error);
+      });
+  };
+  
   
   const handlePageChange = (_: unknown, value: number) => {
     setMealsData({ ...mealsData, currentPage: value });
@@ -87,7 +106,7 @@ const MealsManager = () => {
         My Meals Options
       </Typography>
       <AddMealForm handleCreateMeal={handleCreateMeal}/>
-      <SavedMealsList meals={mealsData.meals} handleDeleteMeal={handleDeleteMeal}/>
+      <SavedMealsList meals={mealsData.meals} handleDeleteMeal={handleDeleteMeal} handleUpdateMeal={handleUpdateMeal}/>
       <Pagination 
         count={mealsData.totalPages} 
         page={mealsData.currentPage} 
