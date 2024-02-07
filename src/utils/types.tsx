@@ -17,3 +17,18 @@ export type FilterValuesType = {
     title: string| undefined,
     isFavorite: boolean,
 };
+
+export type RecipeType = {
+    label: string;
+    mealType: string[];
+    ingredientLines: string[];
+    image: string;
+};
+
+export type HitType = {
+    recipe: RecipeType;
+};
+
+export type ApiResponse = {
+    hits: HitType[];
+};
