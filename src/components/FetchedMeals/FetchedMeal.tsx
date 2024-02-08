@@ -1,11 +1,29 @@
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Button } from "@mui/material";
 import { RecipeType } from "../../utils/types";
+import { useAuth } from "../../utils/AuthProvider";
+import { useState } from "react";
+import { LoginModal } from "./LoginModal";
 
 type FetchedMealType = {
     recipe: RecipeType;
 };
 
 const FetchedMeal = ({ recipe }: FetchedMealType) => {
+    const { isAuthenticated } = useAuth();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleSave = () => {
+        if (!isAuthenticated) {
+            setIsModalOpen(true);
+        } else {
+            saveRecipe();
+        }
+    };
+
+    const saveRecipe = async () => {
+        console.log('Authenticated, saving recipe:', recipe.label);
+    };
+    
     const filterMealType = (mealType: string[]): string => {
         if (mealType.length > 0) {
             const type = mealType[0];
@@ -34,6 +52,10 @@ const FetchedMeal = ({ recipe }: FetchedMealType) => {
                     </li>
                 ))}
                 </ul>
+                <Button variant="contained" color="primary" onClick={handleSave} sx={{ marginTop: '10px' }}>
+                    Save Recipe
+                </Button>
+                <LoginModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>
             </Box>
             <Box
                 component="img"

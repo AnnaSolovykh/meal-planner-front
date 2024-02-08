@@ -49,8 +49,8 @@ const FetchRecipes = () => {
         alignItems="center"
         justifyContent="center"
         sx={{ pt: '64px', width: "100vw", height: "auto", minHeight: "100vh", boxSizing: 'border-box' }}
-        >
-                        <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
+        >                   
+            <form onSubmit={handleSubmit} style={{ marginBottom: '20px', display: 'flex'}}>
                 <TextField
                     label="Search for a recipe"
                     variant="outlined"
