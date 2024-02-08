@@ -1,8 +1,10 @@
 import { Typography, Box, Button } from "@mui/material";
-import { RecipeType } from "../../utils/types";
+import { RecipeType, SavedMealType } from "../../utils/types";
 import { useAuth } from "../../utils/AuthProvider";
 import { useState } from "react";
 import { LoginModal } from "./LoginModal";
+import { createMeal } from "../../utils/fetchData";
+import { useNavigate } from "react-router-dom";
 
 type FetchedMealType = {
     recipe: RecipeType;
@@ -11,19 +13,26 @@ type FetchedMealType = {
 const FetchedMeal = ({ recipe }: FetchedMealType) => {
     const { isAuthenticated } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
 
-    const handleSave = () => {
+    const handleSave =  (meal: SavedMealType) => {
         if (!isAuthenticated) {
             setIsModalOpen(true);
         } else {
-            saveRecipe();
+            saveRecipe(meal);
         }
     };
 
-    const saveRecipe = async () => {
-        console.log('Authenticated, saving recipe:', recipe.label);
-    };
-    
+    const saveRecipe = async (meal: SavedMealType)  => {
+        createMeal(meal)
+        .then(response => {
+            navigate('/meals');
+            })
+            .catch(error => {
+            console.log(error);
+        });
+    }
+
     const filterMealType = (mealType: string[]): string => {
         if (mealType.length > 0) {
             const type = mealType[0];
@@ -39,6 +48,11 @@ const FetchedMeal = ({ recipe }: FetchedMealType) => {
         return 'snack';
     };
 
+    const meal = {
+        title: recipe.label,
+        type: filterMealType(recipe.mealType)
+    }
+
     return (
         <Box sx={{ display: 'flex', marginBottom: '50px', alignItems: 'center', width: '60%', marginX: 'auto' }}>
             <Box sx={{ flex: 1, padding: '10px' }}>
@@ -52,7 +66,7 @@ const FetchedMeal = ({ recipe }: FetchedMealType) => {
                     </li>
                 ))}
                 </ul>
-                <Button variant="contained" color="primary" onClick={handleSave} sx={{ marginTop: '10px' }}>
+                <Button variant="contained" color="primary" onClick={()=> handleSave(meal)} sx={{ marginTop: '10px' }}>
                     Save Recipe
                 </Button>
                 <LoginModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>
