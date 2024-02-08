@@ -42,67 +42,59 @@ const Login = () => {
   };
 
   return (
-    <Box
-      display='flex'
-      flexDirection='column'
-      alignItems='center'
-      justifyContent='center'
-      sx={{ width: '100vw', height: '100vh', backgroundColor: '#f5f5f5' }} // Optional: Add a background color
-    >
-      <Container component="main" maxWidth="xs">
-        <Paper elevation={6} sx={{ my: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2 }}>
-          <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-            Login
-          </Typography>
-          <Box
-            component="form"
-            sx={{
-              '& .MuiTextField-root': { m: 1, width: '25ch' },
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-            noValidate
-            autoComplete="off"
-            onSubmit={handleSubmit}
-          >
-            <TextField
-              required
-              fullWidth
-              id="email"
-              label="Email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              value={loginState.email}
-              onChange={handleChange}
-              margin="normal"
-            />
-            <TextField
-              required
-              fullWidth
-              id="password"
-              label="Password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              value={loginState.password}
-              onChange={handleChange}
-              margin="normal"
-            />
-            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }} fullWidth>
-              Login
-            </Button>
-            <Typography variant="body2" color="textSecondary" align="center">
-              <Link to="/register" style={{ textDecoration: 'none' }}>
-                Register{' '}
-              </Link>
-              if you don't have an account
-            </Typography>
-          </Box>
-        </Paper>
-      </Container>
-    </Box>
+    <Container component="main" maxWidth="xs">
+    <Paper elevation={6} sx={{ my: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2 }}>
+      <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
+        Login
+      </Typography>
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { m: 1, width: '25ch' },
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        <TextField
+          required
+          fullWidth
+          id="email"
+          label="Email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          value={loginState.email}
+          onChange={handleChange}
+          margin="normal"
+        />
+        <TextField
+          required
+          fullWidth
+          id="password"
+          label="Password"
+          name="password"
+          type="password"
+          autoComplete="current-password"
+          value={loginState.password}
+          onChange={handleChange}
+          margin="normal"
+        />
+        <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }} fullWidth>
+          Login
+        </Button>
+        <Typography variant="body2" color="textSecondary" align="center">
+          <Link to="/register" style={{ textDecoration: 'none' }}>
+            Register{' '}
+          </Link>
+          if you don't have an account
+        </Typography>
+      </Box>
+    </Paper>
+  </Container>
   );
 };
 

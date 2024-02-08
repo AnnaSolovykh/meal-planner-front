@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MealManager from './SavedMeals/MealslManager';
 import FetchMeals from './FetchedMeals/FetchMeals';
-import Login from './Authentication/Login'; 
 import Register from './Authentication/Register'; 
 import ProtectedRoute from '../utils/ProtectedRoute';
 import Navbar from './Navbar';
 import { AuthProvider } from '../utils/AuthProvider';
+import LoginComponent from './Authentication/LoginComponent';
 
 const App = () => {
   return (
@@ -14,7 +14,7 @@ const App = () => {
         <Navbar/>
         <Routes>
           <Route path="/" element={<FetchMeals/>} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LoginComponent />} />
           <Route path="/register" element={<Register />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/meals" element={<MealManager />} />
