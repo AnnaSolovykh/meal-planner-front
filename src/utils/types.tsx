@@ -9,20 +9,26 @@ export type SavedMealType = {
     isFavorite?: boolean,
     title: string,
     type: string,
+    link: string,
+    ingredients?: string[],
+    calories?: number,
     _id?: string 
 };
 
 export type FilterValuesType = {
-    type: string | undefined,
-    title: string| undefined,
-    isFavorite: boolean,
+    typeFilter: string,
+    titleFilter: string,
+    isFavoriteFilter: any,
 };
 
 export type RecipeType = {
     label: string;
-    mealType: string[];
-    ingredientLines: string[];
+    mealType: string[],
+    ingredientLines: string[],
     image: string;
+    shareAs: string,
+    calories: number,
+    totalWeight: number
 };
 
 export type HitType = {

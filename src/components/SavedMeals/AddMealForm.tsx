@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Button, Checkbox, Chip, FormControl, FormControlLabel, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
 import { SavedMealType } from '../../utils/types';
 

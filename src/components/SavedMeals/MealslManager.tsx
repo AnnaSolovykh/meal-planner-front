@@ -6,7 +6,7 @@ import SavedMealsList from './SavedMealsList';
 import AddMealForm from './AddMealForm';
 import MealFilter from './MealFilter';
 
-import { useAuth } from '../../utils/AuthProvider';
+import { useAuth } from '../AuthProvider';
 
 const MealsManager = () => {
   const { isAuthenticated } = useAuth(); 
@@ -15,17 +15,22 @@ const MealsManager = () => {
     currentPage: 1, 
     meals: [] 
   });
+
   const limit = 5;
-  const [filters, setFilters] = useState({
+
+  const initialFilters = {
     typeFilter: '',
     titleFilter: '',
-    isFavoriteFilter: false 
-  });
+    isFavoriteFilter: undefined, 
+  };
+  const [filters, setFilters] = useState(initialFilters);
 
   useEffect(()=> {
+
     if (isAuthenticated) {
     getMeals(filters.typeFilter, filters.titleFilter, filters.isFavoriteFilter, mealsData.currentPage, limit)
       .then(response => {
+        console.log(response)
         setMealsData({
           ...mealsData,
           meals: response.meals,
@@ -37,11 +42,13 @@ const MealsManager = () => {
         console.log(error)
       })
     }
-    }, [mealsData.currentPage, filters,isAuthenticated]);
+    }, [mealsData.currentPage, filters, isAuthenticated, filters]);
 
   const handleCreateMeal = (meal: SavedMealType) => {
+    console.log(meal)
     createMeal(meal)
       .then(response => {
+        console.log(response)
         const newMeal = response.data.meal;
         setMealsData({
           ...mealsData,
@@ -91,21 +98,46 @@ const MealsManager = () => {
 
   const handleFilterSubmit = (filterValues: FilterValuesType)=> {
     setFilters({
-      typeFilter: filterValues.type || '',
-      titleFilter: filterValues.title || '',
-      isFavoriteFilter: filterValues.isFavorite
+      typeFilter: filterValues.typeFilter || '',
+      titleFilter: filterValues.titleFilter || '',
+      isFavoriteFilter: filterValues.isFavoriteFilter
     });
     setMealsData({ ...mealsData, currentPage: 1 }); 
   };
+
+  const handleResetFilters = () => {
+    console.log('Resetting filters to initial values:', initialFilters);
+    setFilters({...initialFilters}); 
+    getMeals(initialFilters.typeFilter, initialFilters.titleFilter, initialFilters.isFavoriteFilter, 1, limit)
+        .then(response => {
+            console.log('Data after reset:', response);
+            setMealsData({
+                meals: response.meals,
+                totalPages: response.totalPages,
+                currentPage: 1,
+            });
+        })
+        .catch(error => console.log(error));
+};
+
   
   
   return (
-    <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center' sx={{ width: '100vw', height: '100vh' }}>
-      <MealFilter onFilterSubmit={handleFilterSubmit}/> 
-      <Typography variant='h3' component='h3'>
+      <Box 
+        display='flex' 
+        flexDirection='column' 
+        alignItems='center' 
+        sx={{ 
+          width: '100vw', 
+          minHeight: '100vh', 
+          flexGrow: 1, 
+        }}
+      >      
+      <MealFilter onFilterSubmit={handleFilterSubmit} onResetFilters={handleResetFilters}/> 
+      <Typography variant='h3' component='h3' style={ {letterSpacing: '2px'} }>
         My Meals Options
       </Typography>
-      <AddMealForm handleCreateMeal={handleCreateMeal}/>
+      <AddMealForm onCreateMeal={handleCreateMeal}/>
       <SavedMealsList meals={mealsData.meals} handleDeleteMeal={handleDeleteMeal} handleUpdateMeal={handleUpdateMeal}/>
       <Pagination 
         count={mealsData.totalPages} 

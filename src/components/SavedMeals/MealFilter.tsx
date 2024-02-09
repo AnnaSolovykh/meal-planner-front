@@ -1,12 +1,14 @@
 import { useState, MouseEvent } from 'react';
 import { Button, Menu, MenuItem, TextField, FormControlLabel, Switch, Select, InputLabel, FormControl } from '@mui/material';
+import { FilterValuesType} from '../../utils/types';
 
 
 type MealFilterProps = {
-    onFilterSubmit: (filters: { title: string, isFavorite: boolean, type: string }) => void;
+    onFilterSubmit: (filterValues: FilterValuesType) => void;
+    onResetFilters: () => void;
 };
 
-const MealFilter = ({ onFilterSubmit }: MealFilterProps) => {
+const MealFilter = ({ onFilterSubmit, onResetFilters }: MealFilterProps) => {
     const [filterMenuToggle, setFilterMenuToggle] = useState<null | HTMLElement>(null);
     const [titleFilter, setTitleFilter] = useState<string>('');
     const [isFavoriteFilter, setIsFavoriteFilter] = useState<boolean>(false);
@@ -22,16 +24,35 @@ const MealFilter = ({ onFilterSubmit }: MealFilterProps) => {
 
     const handleSubmit = () => {
         onFilterSubmit({
-            title: titleFilter,
-            isFavorite: isFavoriteFilter,
-            type: typeFilter
+            typeFilter,
+            titleFilter,
+            isFavoriteFilter
         });
         handleClose();
     };
+    
 
+    const handleReset = () => {
+        onResetFilters();
+        handleClose();
+    };
     return (
-        <div>
-            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+        <div style={{ position: 'relative' }}>
+            <Button 
+                variant="contained" 
+                aria-controls="simple-menu" 
+                aria-haspopup="true" 
+                onClick={handleClick} 
+                style={{ 
+                    borderRadius: '8px', 
+                    margin: '40px 0 20px 0', 
+                    fontSize: '16px', 
+                    fontWeight: 'bold', 
+                    padding: '10px 20px', 
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.2)', 
+                    color: 'white', 
+                    letterSpacing: '2px'
+                }}>
                 Filters
             </Button>
             <Menu
@@ -73,6 +94,9 @@ const MealFilter = ({ onFilterSubmit }: MealFilterProps) => {
                 </MenuItem>
                 <MenuItem>
                     <Button onClick={handleSubmit}>Apply Filters</Button>
+                </MenuItem>
+                <MenuItem>
+                    <Button onClick={handleReset}>Clear All Filters</Button>
                 </MenuItem>
             </Menu>
         </div>
