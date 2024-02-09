@@ -18,7 +18,7 @@ export type SavedMealType = {
 export type FilterValuesType = {
     typeFilter: string,
     titleFilter: string,
-    isFavoriteFilter: any,
+    isFavoriteFilter?: any; 
 };
 
 export type RecipeType = {

@@ -66,14 +66,21 @@ const MealFilter = ({ onFilterSubmit, onResetFilters }: MealFilterProps) => {
                     <TextField 
                         label="Title" 
                         name="title" 
+                        id="title" 
                         value={titleFilter} 
                         onChange={(e) => setTitleFilter(e.target.value)} 
+                        onKeyDown={(e) => e.stopPropagation()}
                     />
                 </MenuItem>
                 <MenuItem>
                     <FormControlLabel 
-                        control={<Switch checked={isFavoriteFilter} onChange={(e) => setIsFavoriteFilter(e.target.checked)} name="isFavorite" />} 
-                        label="Favorite" 
+                        label="Favorites Only"
+                        control={
+                            <Switch checked={isFavoriteFilter} 
+                                    onChange={(e) => setIsFavoriteFilter(e.target.checked)} 
+                                    name="isFavorite" 
+                                    id="isFavorite" 
+                            />} 
                     />
                 </MenuItem>
                 <MenuItem>
