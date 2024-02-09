@@ -9,6 +9,7 @@ const FetchRecipes = () => {
     const [searchTerm, setSearchTerm] = useState(() => 
         sessionStorage.getItem('searchTerm') || 'salmon'
     );
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const apiKey = import.meta.env.VITE_EDAMAM_API_KEY;
     const appId = import.meta.env.VITE_EDAMAM_APP_ID;
@@ -29,6 +30,8 @@ const FetchRecipes = () => {
             sessionStorage.setItem('searchTerm', searchTerm);
         } catch (error) {
             console.error("Error fetching recipes:", error);
+            const message = 'Cannot get recipes. Please try again later.'
+            setErrorMessage(message);
         }
     };
 
@@ -63,7 +66,20 @@ const FetchRecipes = () => {
                 </Button>
             </form>
         {loading ? (
-            <CircularProgress />
+            <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                alignItems: 'center', 
+                justifyContent: 'space-around',
+                height: '20vh' 
+            }}>
+                <CircularProgress />
+                {errorMessage && (
+                    <Typography variant="body2" style={{ color: 'darkred', marginBottom: '10px' }}>
+                        {errorMessage}
+                    </Typography>
+                )}
+            </div>
         ) : (
             <>
             <Typography variant="h3" component="h3" sx={{ mb: 4 }}>

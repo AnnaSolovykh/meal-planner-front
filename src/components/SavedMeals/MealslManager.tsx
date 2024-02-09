@@ -24,13 +24,12 @@ const MealsManager = () => {
     isFavoriteFilter: undefined, 
   };
   const [filters, setFilters] = useState(initialFilters);
+  const [errorMessage, setErrorMessage] = useState<string[]>([]);
 
   useEffect(()=> {
-
     if (isAuthenticated) {
     getMeals(filters.typeFilter, filters.titleFilter, filters.isFavoriteFilter, mealsData.currentPage, limit)
       .then(response => {
-        console.log(response)
         setMealsData({
           ...mealsData,
           meals: response.meals,
@@ -39,16 +38,15 @@ const MealsManager = () => {
         });
       })
       .catch(error => {
-        console.log(error)
+        const message = error.response?.data?.msg || 'Failed to load meals. Please try again.';
+        setErrorMessage(message);
       })
     }
     }, [mealsData.currentPage, filters, isAuthenticated, filters]);
 
   const handleCreateMeal = (meal: SavedMealType) => {
-    console.log(meal)
     createMeal(meal)
       .then(response => {
-        console.log(response)
         const newMeal = response.data.meal;
         setMealsData({
           ...mealsData,
@@ -56,7 +54,8 @@ const MealsManager = () => {
         });
       })
       .catch(error => {
-        console.log(error);
+        const messages = error.response?.data?.msg.split(',').map((msg: string) => msg.trim() + '.');
+        setErrorMessage(messages || ['An unexpected error occurred.']);
       });
   };
 
@@ -69,7 +68,8 @@ const MealsManager = () => {
         }));
       })
       .catch(error => {
-        console.log(error);
+        const message = error.response?.data?.msg || 'Deleting the meal failed. Please try again.';
+        setErrorMessage(message);
       });
   };
 
@@ -87,7 +87,8 @@ const MealsManager = () => {
         });
       })
       .catch((error) => {
-        console.error('Error updating meal:', error);
+        const message = error.response?.data?.msg || 'Updating the meal failed. Please try again.';
+        setErrorMessage(message);
       });
   };
   
@@ -106,18 +107,19 @@ const MealsManager = () => {
   };
 
   const handleResetFilters = () => {
-    console.log('Resetting filters to initial values:', initialFilters);
     setFilters({...initialFilters}); 
     getMeals(initialFilters.typeFilter, initialFilters.titleFilter, initialFilters.isFavoriteFilter, 1, limit)
         .then(response => {
-            console.log('Data after reset:', response);
             setMealsData({
                 meals: response.meals,
                 totalPages: response.totalPages,
                 currentPage: 1,
             });
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+          const message = error.response?.data?.msg || 'Failed to reset filters meals. Please try again.';
+          setErrorMessage(message);
+        });
 };
 
   
@@ -133,12 +135,22 @@ const MealsManager = () => {
           flexGrow: 1, 
         }}
       >      
-      <MealFilter onFilterSubmit={handleFilterSubmit} onResetFilters={handleResetFilters}/> 
+      <MealFilter 
+        onFilterSubmit={handleFilterSubmit} 
+        onResetFilters={handleResetFilters}
+      /> 
       <Typography variant='h3' component='h3' style={ {letterSpacing: '2px'} }>
         My Meals Options
       </Typography>
-      <AddMealForm onCreateMeal={handleCreateMeal}/>
-      <SavedMealsList meals={mealsData.meals} handleDeleteMeal={handleDeleteMeal} handleUpdateMeal={handleUpdateMeal}/>
+      <AddMealForm 
+        onCreateMeal={handleCreateMeal} 
+        errorMessage={errorMessage}
+      />
+      <SavedMealsList 
+        meals={mealsData.meals} 
+        handleDeleteMeal={handleDeleteMeal} 
+        handleUpdateMeal={handleUpdateMeal}
+      />
       <Pagination 
         count={mealsData.totalPages} 
         page={mealsData.currentPage} 

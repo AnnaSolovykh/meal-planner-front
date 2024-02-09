@@ -13,6 +13,8 @@ type FetchedMealType = {
 const FetchedMeal = ({ recipe }: FetchedMealType) => {
     const { isAuthenticated } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string[]>([]);
+
     const navigate = useNavigate();
 
     const handleSave =  (meal: SavedMealType) => {
@@ -28,8 +30,9 @@ const FetchedMeal = ({ recipe }: FetchedMealType) => {
         .then(() => {
             navigate('/meals');
             })
-            .catch(error => {
-            console.log(error);
+        .catch(error => {
+            const messages = error.response?.data?.msg.split(',').map((msg: string) => msg.trim() + '.');
+            setErrorMessage(messages || ['An unexpected error occurred.']);
         });
     }
 
@@ -76,6 +79,11 @@ const FetchedMeal = ({ recipe }: FetchedMealType) => {
                 <Button variant="contained" color="primary" onClick={()=> handleSave(meal)} sx={{ marginTop: '10px', letterSpacing: '1px' }}>
                     Save Recipe
                 </Button>
+                {errorMessage && (
+                    <Typography variant="body2" style={{ color: 'darkred', marginBottom: '10px' }}>
+                        {errorMessage}
+                    </Typography>
+                )}
                 <LoginModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>
             </Box>
             <Box

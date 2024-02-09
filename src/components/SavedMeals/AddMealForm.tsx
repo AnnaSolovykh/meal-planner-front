@@ -1,20 +1,21 @@
 import React from 'react';
 import { ChangeEvent, useState } from 'react';
-import { Button, Checkbox, Chip, FormControl, FormControlLabel, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
+import { Button, Checkbox, Chip, FormControl, FormControlLabel, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import { SavedMealType } from '../../utils/types';
 
 type AddMealFormProps = {
-    onCreateMeal: (meal: SavedMealType) => void;
+    onCreateMeal: (meal: SavedMealType) => void,
+    errorMessage: string[]
 };
 
-const AddMealForm = ({ onCreateMeal }: AddMealFormProps) => {
+const AddMealForm = ({ onCreateMeal, errorMessage }: AddMealFormProps) => {
     const [title, setTitle] = useState('');
     const [type, setType] = useState('');
     const [link, setLink] = useState('');
     const [ingredients, setIngredients] = useState<string[]>([]);
     const [calories, setCalories] = useState('');
     const [isFavorite, setIsFavorite] = useState(false);
-    const [ingredientInput, setIngredientInput] = useState('')
+    const [ingredientInput, setIngredientInput] = useState('');
 
     const createTitle = (event: ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
@@ -147,10 +148,15 @@ const AddMealForm = ({ onCreateMeal }: AddMealFormProps) => {
             type="submit"
             variant="contained"
             color="primary"
-            sx={{ gridColumn: '1 / -1', margin: 'normal', marginBottom:'20px', letterSpacing: '2px' }} 
+            sx={{ gridColumn: '1 / -1', margin: 'normal', letterSpacing: '2px' }} 
         >
             Add Meal
         </Button>
+        {errorMessage && (
+            <Typography variant="body2" style={{ color: 'darkred', marginBottom: '10px', textAlign: 'left' }}>
+                {errorMessage}
+            </Typography>
+        )}
     </form>
 
     );

@@ -18,6 +18,7 @@ const Register = () => {
     email: '',
     password: '',
   });
+  const [errorMessage, setErrorMessage] = useState<string[]>([]);
 
   const navigate = useNavigate();
 
@@ -28,13 +29,13 @@ const Register = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(registerState)
     fetchRegister(registerState.name, registerState.email, registerState.password)
     .then (() => {
       navigate('/login');
     })
     .catch(error => {
-      console.log(error)
+      const messages = error.response?.data?.msg.split(',').map((msg: string) => msg.trim() + '.');
+      setErrorMessage(messages || ['Registration failed. Please try again.']);
     })
   };
 
@@ -89,6 +90,11 @@ const Register = () => {
             >
               Sign Up
             </Button>
+            {errorMessage && (
+            <Typography variant="body2" style={{ color: 'darkred', marginBottom: '10px' }}>
+              {errorMessage}
+            </Typography>
+            )}
             <Typography variant="body2" color="textSecondary" align="center">
               <Link to="/login" style={{ textDecoration: 'none' }}>
                 Sign in{' '}

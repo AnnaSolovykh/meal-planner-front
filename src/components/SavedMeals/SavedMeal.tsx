@@ -19,6 +19,7 @@ const SavedMeal = ({ meal, handleDeleteMeal, handleUpdateMeal }: SavedRecipeProp
     const [checked, setChecked] = useState(meal.isFavorite);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
 
     const handleCheckboxChange = async (event: ChangeEvent<HTMLInputElement>)  => {
@@ -26,8 +27,9 @@ const SavedMeal = ({ meal, handleDeleteMeal, handleUpdateMeal }: SavedRecipeProp
         setChecked(newCheckedStatus);
         try {
             await updateMeal(meal._id ?? '', { ...meal, isFavorite: newCheckedStatus });
-        } catch (error) {
-            console.error('Error updating meal:', error);
+        } catch (error: any) {
+            const message = error.response?.data?.msg || 'Failed to update the meal. Please try again.';
+            setErrorMessage(message);
         }
     };
 
@@ -110,6 +112,11 @@ const SavedMeal = ({ meal, handleDeleteMeal, handleUpdateMeal }: SavedRecipeProp
                 onModalClose={handleModalClose} 
                 onUpdateMeal={handleUpdateMeal}
             />
+            {errorMessage && (
+            <Typography variant="body2" style={{ color: 'darkred', marginBottom: '10px' }}>
+                {errorMessage}
+            </Typography>
+            )}
         </Grid>
     )
 };

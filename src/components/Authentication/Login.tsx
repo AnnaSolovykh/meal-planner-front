@@ -17,6 +17,7 @@ const Login = () => {
     email: '',
     password: '',
   });
+  const [errorMessage, setErrorMessage] = useState<string[]>([]);
 
   const navigate  = useNavigate();
 
@@ -37,7 +38,8 @@ const Login = () => {
         navigate('/');
       })
       .catch(error => {
-        console.log(error)
+        const messages = error.response?.data?.msg.split(',').map((msg: string) => msg.trim() + '.');
+        setErrorMessage(messages || ['Sign in failed. Please try again.']);
       })
   };
 
@@ -86,6 +88,11 @@ const Login = () => {
         <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }} fullWidth>
           Login
         </Button>
+          {errorMessage && (
+            <Typography variant="body2" style={{ color: 'darkred', marginBottom: '10px' }}>
+              {errorMessage}
+            </Typography>
+          )}
         <Typography variant="body2" color="textSecondary" align="center">
           <Link to="/register" style={{ textDecoration: 'none' }}>
             Register{' '}
