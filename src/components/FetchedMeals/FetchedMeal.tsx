@@ -1,10 +1,10 @@
 import { Typography, Box, Button } from "@mui/material";
 import { RecipeType, SavedMealType } from "../../utils/types";
-import { useAuth } from "../../utils/AuthProvider";
+import { useAuth } from "../AuthProvider";
 import { useState } from "react";
 import { LoginModal } from "./LoginModal";
 import { createMeal } from "../../utils/fetchData";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 type FetchedMealType = {
     recipe: RecipeType;
@@ -25,7 +25,7 @@ const FetchedMeal = ({ recipe }: FetchedMealType) => {
 
     const saveRecipe = async (meal: SavedMealType)  => {
         createMeal(meal)
-        .then(response => {
+        .then(() => {
             navigate('/meals');
             })
             .catch(error => {
@@ -48,9 +48,14 @@ const FetchedMeal = ({ recipe }: FetchedMealType) => {
         return 'snack';
     };
 
-    const meal = {
+    const calories = Math.floor((recipe.calories / recipe.totalWeight) * 100);
+
+    const meal: SavedMealType  = {
         title: recipe.label,
-        type: filterMealType(recipe.mealType)
+        type: filterMealType(recipe.mealType),
+        link: recipe.shareAs,
+        ingredients: recipe.ingredientLines,
+        calories: calories,
     }
 
     return (
@@ -58,6 +63,8 @@ const FetchedMeal = ({ recipe }: FetchedMealType) => {
             <Box sx={{ flex: 1, padding: '10px' }}>
                 <Typography variant="h5">{recipe.label}</Typography>
                 <Typography variant="subtitle1">{filterMealType(recipe.mealType)}</Typography>
+                <Typography variant="body1">{calories} kkal per 100 grams</Typography>
+                <Link to={recipe.shareAs}>Recipe details</Link>
                 <Typography variant="body1">Ingredients:</Typography>
                 <ul>
                 {recipe.ingredientLines.map((ingredient, id) => (
@@ -66,7 +73,7 @@ const FetchedMeal = ({ recipe }: FetchedMealType) => {
                     </li>
                 ))}
                 </ul>
-                <Button variant="contained" color="primary" onClick={()=> handleSave(meal)} sx={{ marginTop: '10px' }}>
+                <Button variant="contained" color="primary" onClick={()=> handleSave(meal)} sx={{ marginTop: '10px', letterSpacing: '1px' }}>
                     Save Recipe
                 </Button>
                 <LoginModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>

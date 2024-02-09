@@ -1,10 +1,13 @@
 import { ChangeEvent, useState } from 'react';
-import { Checkbox, Grid, IconButton, Modal, Paper, Typography } from '@mui/material';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { Checkbox, Grid, IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import EditingModal from './EditingModal';
 import { SavedMealType } from '../../utils/types';
 import { updateMeal } from '../../utils/fetchData';
-import EditingModal from './EditingModal';
+import MealDetailsModal from './MealDetailsModal';
 
 type SavedRecipeProps = {
     meal: SavedMealType,
@@ -15,6 +18,7 @@ type SavedRecipeProps = {
 const SavedMeal = ({ meal, handleDeleteMeal, handleUpdateMeal }: SavedRecipeProps) => {
     const [checked, setChecked] = useState(meal.isFavorite);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
 
     const handleCheckboxChange = async (event: ChangeEvent<HTMLInputElement>)  => {
@@ -35,6 +39,16 @@ const SavedMeal = ({ meal, handleDeleteMeal, handleUpdateMeal }: SavedRecipeProp
         setIsModalOpen(false);
     };
 
+    const handleDetailsClick = () => {
+        setIsDetailsModalOpen(true);
+    };
+
+    const handleDetailsClose = () => {
+        setIsDetailsModalOpen(false);
+    };
+    
+
+
     return (
         <Grid container spacing={5} alignItems='center'>
             <Grid item xs={6}>
@@ -43,24 +57,33 @@ const SavedMeal = ({ meal, handleDeleteMeal, handleUpdateMeal }: SavedRecipeProp
             <Grid item xs={2}>
                 <Typography>{meal.type}</Typography>
             </Grid>
-            <Grid item xs={2}>
-                <Checkbox
+            <Grid item xs={1}>
+            <Checkbox
                     checked={checked}
                     onChange={handleCheckboxChange}
-                    icon={<span style={{ border: '2px solid #ccc', borderRadius: '3px', width: 24, height: 24 }} />}
-                    checkedIcon={<span style={{ backgroundColor: '#f50057', borderRadius: '3px', width: 24, height: 24 }} />}
+                    icon={<FavoriteBorderIcon />} 
+                    checkedIcon={<FavoriteIcon />} 
+                    sx={{
+                        width: 46, 
+                        height: 46,
+                    }}
+                />
+            </Grid>
+            <Grid item xs={1}>
+                <MealDetailsModal 
+                    meal={meal}
+                    onDetailsClick={handleDetailsClick}
+                    onDetailesClose={handleDetailsClose}
+                    isDetailsModalOpen={isDetailsModalOpen}
+
                 />
             </Grid>
             <Grid item xs={1}>
                 <IconButton 
                     onClick={handleEditClick}
                     aria-label='edit' 
+                    color="primary" 
                     sx={{
-                        color: '#f50057', 
-                        '&:hover': {
-                            backgroundColor: 'rgba(255, 23, 68, 0.04)', 
-                            color: '#ff1744', 
-                        },
                         width: 46, 
                         height: 46
                     }}
@@ -72,20 +95,21 @@ const SavedMeal = ({ meal, handleDeleteMeal, handleUpdateMeal }: SavedRecipeProp
                 <IconButton 
                     onClick={ ()=> handleDeleteMeal(meal._id) } 
                     aria-label='delete'
+                    color="primary"
                     sx={{
-                        color: '#f50057', 
-                        '&:hover': {
-                            backgroundColor: 'rgba(255, 23, 68, 0.04)', 
-                            color: '#ff1744', 
-                        },
                         width: 46, 
-                        height: 46
+                        height: 46,
                     }}
                 >
                     <DeleteOutlineIcon sx={{ width: 31, height: 31 }} />
                 </IconButton>
             </Grid>
-            <EditingModal meal={meal} isModalOpen={isModalOpen} onModalClose={handleModalClose} onUpdateMeal={handleUpdateMeal}/>
+            <EditingModal 
+                meal={meal} 
+                isModalOpen={isModalOpen} 
+                onModalClose={handleModalClose} 
+                onUpdateMeal={handleUpdateMeal}
+            />
         </Grid>
     )
 };

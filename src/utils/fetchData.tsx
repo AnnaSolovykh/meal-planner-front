@@ -34,7 +34,7 @@ export const fetchLogout = () => {
     return api.post('http://localhost:4000/api/v1/auth/logout');
 };
 
-export const getMeals = (typeFilter: string, titleFilter: string, isFavoriteFilter: boolean, currentPage: number, limit: number): Promise<MealsType> => {
+export const getMeals = (typeFilter: string, titleFilter: string, isFavoriteFilter: boolean | undefined, currentPage: number, limit: number): Promise<MealsType> => {
     let query = `page=${currentPage}&limit=${limit}`;
 
     if (typeFilter) {
@@ -53,7 +53,9 @@ export const getMeals = (typeFilter: string, titleFilter: string, isFavoriteFilt
 
 export const createMeal = (meal: SavedMealType) => {
     return api.post('http://localhost:4000/api/v1/meals/',
-    meal,
+    {
+        ...meal
+    },
     {
         headers: {
             'Content-Type': 'application/json',
@@ -64,7 +66,9 @@ export const createMeal = (meal: SavedMealType) => {
 
 export const updateMeal = (mealId: string, meal: SavedMealType) => {
     return api.patch(`http://localhost:4000/api/v1/meals/${mealId}`, 
-    meal,
+    {
+        ...meal
+    },
     {
         headers: {
             'Content-Type': 'application/json',
