@@ -2,9 +2,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MealManager from './SavedMeals/MealslManager';
 import FetchMeals from './FetchedMeals/FetchMeals';
 import Register from './Authentication/Register'; 
-import ProtectedRoute from '../utils/ProtectedRoute';
+import ProtectedRoute from './ProtectedRoute';
 import Navbar from './Navbar';
-import { AuthProvider } from '../utils/AuthProvider';
+import { AuthProvider } from './AuthProvider';
 import LoginComponent from './Authentication/LoginComponent';
 
 const App = () => {

@@ -101,7 +101,7 @@ const EditingModal = ({ meal, isModalOpen, onModalClose, onUpdateMeal }: Editing
             onClick={onModalClose}
             sx={{ position: "absolute", right: 8, top: 8, color: "grey" }}
             >
-            <CloseIcon />
+                <CloseIcon />
             </IconButton>
         </Paper>
         </Modal>

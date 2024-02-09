@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { Container, Paper, Typography } from '@mui/material';
 import { fetchLogin } from '../../utils/fetchData';
-import { useAuth } from '../../utils/AuthProvider';
+import { useAuth } from '../AuthProvider';
 
 type LoginState = {
   email: string;

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Modal, Box, IconButton } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import Login from '../Authentication/Login';
-import { useAuth } from '../../utils/AuthProvider';
+import { useAuth } from '../AuthProvider';
 import { useNavigate } from 'react-router-dom';
 
 type LoginModalProps = {
