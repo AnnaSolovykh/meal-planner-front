@@ -13,6 +13,7 @@ export type SavedMealType = {
     ingredients?: string[],
     calories?: number,
     _id?: string 
+    ingredientInput?: string; 
 };
 
 export type FilterValuesType = {

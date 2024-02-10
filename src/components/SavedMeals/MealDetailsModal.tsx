@@ -1,5 +1,5 @@
 import { Article } from "@mui/icons-material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Close } from "@mui/icons-material";
 import { Box, IconButton, Link, Modal, Paper, Typography } from "@mui/material";
 import { SavedMealType } from "../../utils/types";
 
@@ -65,7 +65,7 @@ const MealDetailsModal = ({ meal, onDetailsClick, onDetailesClose, isDetailsModa
                             onClick={onDetailesClose}
                             sx={{ position: "absolute", right: 8, top: 8, color: "grey" }}
                         >
-                            <CloseIcon />
+                            <Close />
                         </IconButton>
                     </Paper>
                 </Box>

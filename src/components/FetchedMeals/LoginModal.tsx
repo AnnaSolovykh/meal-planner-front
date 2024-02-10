@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Modal, Box, IconButton } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
+import { Close } from '@mui/icons-material';
 import Login from '../Authentication/Login';
 import { useAuth } from '../AuthProvider';
 import { useNavigate } from 'react-router-dom';
@@ -53,7 +53,7 @@ export const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                         '& .MuiSvgIcon-root': { fontSize: 35 } 
                     }}
                 >
-                    <CloseIcon />
+                    <Close />
                 </IconButton>
                 <Login />
             </Box>

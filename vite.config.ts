@@ -9,5 +9,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3005
+  },
+  optimizeDeps: {
+    include: ['@mui/material', '@mui/icons-material']
   }
 })

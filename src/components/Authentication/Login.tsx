@@ -1,8 +1,8 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
+import { TextField } from '@mui/material';
+import { Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { Container, Paper, Typography } from '@mui/material';
 import { fetchLogin } from '../../utils/fetchData';
 import { useAuth } from '../AuthProvider';

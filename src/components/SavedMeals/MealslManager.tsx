@@ -59,7 +59,10 @@ const MealsManager = () => {
       });
   };
 
-  const handleDeleteMeal = (mealId: string) => {
+  const handleDeleteMeal = (mealId: string | undefined) => {
+    if (!mealId) {
+      return;
+    }
     deleteMeal(mealId)
       .then(() => {
         setMealsData(prevMealsData => ({
@@ -74,6 +77,9 @@ const MealsManager = () => {
   };
 
   const handleUpdateMeal = (mealId: string, updatedMeal: SavedMealType) => {
+    if (!mealId) {
+      return;
+    }
     updateMeal(mealId, updatedMeal)
       .then((response) => {
         const updatedMealIndex = mealsData.meals.findIndex(
@@ -148,8 +154,8 @@ const MealsManager = () => {
       />
       <SavedMealsList 
         meals={mealsData.meals} 
-        handleDeleteMeal={handleDeleteMeal} 
-        handleUpdateMeal={handleUpdateMeal}
+        onDeleteMeal={handleDeleteMeal} 
+        onUpdateMeal={handleUpdateMeal}
       />
       <Pagination 
         count={mealsData.totalPages} 
