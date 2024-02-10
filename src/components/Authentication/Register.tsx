@@ -29,24 +29,51 @@ const Register = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    fetchRegister(registerState.name, registerState.email, registerState.password)
-    .then (() => {
-      navigate('/login');
-    })
-    .catch(error => {
-      const messages = error.response?.data?.msg.split(',').map((msg: string) => msg.trim() + '.');
-      setErrorMessage(messages || ['Registration failed. Please try again.']);
-    })
+    fetchRegister(
+      registerState.name,
+      registerState.email,
+      registerState.password
+    )
+      .then(() => {
+        navigate('/login');
+      })
+      .catch((error) => {
+        const messages = error.response?.data?.msg
+          .split(',')
+          .map((msg: string) => msg.trim() + '.');
+        setErrorMessage(messages || ['Registration failed. Please try again.']);
+      });
   };
 
   return (
-    <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center' sx={{ width: '100vw', height: '100vh' }}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      sx={{ width: '100vw', height: '100vh' }}
+    >
       <Container component="main" maxWidth="xs">
-        <Paper elevation={6} sx={{ my: 1, mx: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2 }}>
+        <Paper
+          elevation={6}
+          sx={{
+            my: 1,
+            mx: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: 2,
+          }}
+        >
           <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
             Sign up
           </Typography>
-          <Box component="form" sx={{ mt: 1 }} noValidate onSubmit={handleSubmit}>
+          <Box
+            component="form"
+            sx={{ mt: 1 }}
+            noValidate
+            onSubmit={handleSubmit}
+          >
             <TextField
               margin="normal"
               required
@@ -91,9 +118,12 @@ const Register = () => {
               Sign Up
             </Button>
             {errorMessage && (
-            <Typography variant="body2" style={{ color: 'darkred', marginBottom: '10px' }}>
-              {errorMessage}
-            </Typography>
+              <Typography
+                variant="body2"
+                style={{ color: 'darkred', marginBottom: '10px' }}
+              >
+                {errorMessage}
+              </Typography>
             )}
             <Typography variant="body2" color="textSecondary" align="center">
               <Link to="/login" style={{ textDecoration: 'none' }}>
