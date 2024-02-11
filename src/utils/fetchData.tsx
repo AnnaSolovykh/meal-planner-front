@@ -2,18 +2,7 @@ import api from './api';
 import { MealsType, SavedMealType } from './types';
 
 export const fetchLogin = (email: string, password: string) => {
-  return api.post(
-    `http://localhost:4000/api/v1/auth/login`,
-    {
-      email,
-      password,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+    return api.post('/auth/login', { email, password });
 };
 
 export const fetchRegister = (
@@ -21,23 +10,11 @@ export const fetchRegister = (
   email: string,
   password: string
 ) => {
-  return api.post(
-    `http://localhost:4000/api/v1/auth/register`,
-    {
-      name,
-      email,
-      password,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+    return api.post('/auth/register', { name, email, password });
 };
 
 export const fetchLogout = () => {
-  return api.post('http://localhost:4000/api/v1/auth/logout');
+  return api.post('/auth/logout');
 };
 
 export const getMeals = (
@@ -60,42 +37,18 @@ export const getMeals = (
   }
 
   return api
-    .get(`http://localhost:4000/api/v1/meals?${query}`)
+    .get(`/meals?${query}`)
     .then((response) => response.data as MealsType);
 };
 
 export const createMeal = (meal: SavedMealType) => {
-  return api.post(
-    'http://localhost:4000/api/v1/meals/',
-    {
-      ...meal,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  return api.post('/meals/', { ...meal });
 };
 
 export const updateMeal = (mealId: string, meal: SavedMealType) => {
-  return api.patch(
-    `http://localhost:4000/api/v1/meals/${mealId}`,
-    {
-      ...meal,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  return api.patch(`/meals/${mealId}`, { ...meal });
 };
 
 export const deleteMeal = (mealId: string) => {
-  return api.delete(`http://localhost:4000/api/v1/meals/${mealId}`, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  return api.delete(`/meals/${mealId}`)
 };

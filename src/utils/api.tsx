@@ -1,6 +1,13 @@
 import axios from 'axios';
 
-const api = axios.create();
+const api = axios.create({
+    //baseURL: 'http://localhost:4000/api/v1', 
+    baseURL: 'https://meal-planner-2qb0.onrender.com/api/v1',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});
+
 
 api.interceptors.request.use(
   (config) => {
