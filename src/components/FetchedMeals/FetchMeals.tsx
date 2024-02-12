@@ -34,8 +34,12 @@ const FetchRecipes = () => {
       setRecipes(fetchedRecipes);
       setLoading(false);
       sessionStorage.setItem('searchTerm', searchTerm);
+      if (fetchedRecipes.length === 0) {
+        setErrorMessage('No recipes found. Try again please.');
+      } else {
+        setErrorMessage('');
+      }
     } catch (error) {
-      console.error('Error fetching recipes:', error);
       const message = 'Cannot get recipes. Please try again later.';
       setErrorMessage(message);
     }
@@ -104,6 +108,14 @@ const FetchRecipes = () => {
           <Typography variant="h3" component="h3" sx={{ mb: 4 }}>
             Recipes
           </Typography>
+          {errorMessage && (
+            <Typography
+              variant="body2"
+              style={{ color: 'darkred', marginBottom: '10px' }}
+            >
+              {errorMessage}
+            </Typography>
+          )}
           {recipes.map((recipe, index) => (
             <FetchedMeal key={index} recipe={recipe} />
           ))}
