@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Box, Pagination, Typography } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
+import { Box, CircularProgress, Pagination, Typography } from '@mui/material';
 import { FilterValuesType, MealsType, SavedMealType } from '../../utils/types';
 import {
   createMeal,
@@ -21,6 +21,8 @@ const MealsManager = () => {
     meals: [],
   });
 
+  const [loading, setLoading] = useState<boolean>(true);
+
   const limit = 5;
 
   const initialFilters = {
@@ -30,7 +32,30 @@ const MealsManager = () => {
   };
   const [filters, setFilters] = useState(initialFilters);
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
-
+  const [showDelayedMessage, setShowDelayedMessage] = useState(false);
+  const timeoutIdRef = useRef<NodeJS.Timeout | null>(null);
+  
+  useEffect(() => {
+    return () => {
+      if (timeoutIdRef.current) {
+        clearTimeout(timeoutIdRef.current);
+      }
+    };
+  }, []);
+  
+  useEffect(() => {
+    if (loading) {
+      timeoutIdRef.current = setTimeout(() => {
+        setShowDelayedMessage(true);
+      }, 3000);
+    } else {
+      setShowDelayedMessage(false);
+      if (timeoutIdRef.current) {
+        clearTimeout(timeoutIdRef.current);
+      }
+    }
+  }, [loading]);
+  
   useEffect(() => {
     if (isAuthenticated) {
       getMeals(
@@ -47,6 +72,9 @@ const MealsManager = () => {
             totalPages: response.totalPages,
             currentPage: response.currentPage,
           });
+        })
+        .finally(() => {
+          setLoading(false);
         })
         .catch((error) => {
           const message =
@@ -78,21 +106,34 @@ const MealsManager = () => {
     if (!mealId) {
       return;
     }
-    deleteMeal(mealId)
+      setLoading(true);
+      deleteMeal(mealId)
       .then(() => {
-        setMealsData((prevMealsData) => ({
-          ...prevMealsData,
-          meals: prevMealsData.meals.filter((item) => item._id !== mealId),
-        }));
+        const filteredMeals = mealsData.meals.filter((meal) => meal._id !== mealId);
+  
+        let currentPage = mealsData.currentPage;
+        if (filteredMeals.length < mealsData.meals.length && currentPage > 1) {
+          currentPage--;
+        }
+          const totalPages = Math.ceil(filteredMeals.length / limit);
+          setMealsData({
+          ...mealsData,
+          meals: filteredMeals,
+          totalPages: totalPages,
+          currentPage: currentPage,
+        });
       })
       .catch((error) => {
         const message =
           error.response?.data?.msg ||
           'Deleting the meal failed. Please try again.';
         setErrorMessage(message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
-
+  
   const handleUpdateMeal = (mealId: string, updatedMeal: SavedMealType) => {
     if (!mealId) {
       return;
@@ -181,6 +222,18 @@ const MealsManager = () => {
         onDeleteMeal={handleDeleteMeal}
         onUpdateMeal={handleUpdateMeal}
       />
+      {loading && showDelayedMessage &&(
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
+        <CircularProgress />
+        <Typography variant="body1" component="p" sx={{ color: (theme) => theme.palette.text.primary, opacity: 0.5, fontSize: '0.8rem' }}>
+          Loading meals may take a while as the web service is deployed in Frankfurt.
+        </Typography>
+      </Box>
+      )}
       <Pagination
         count={mealsData.totalPages}
         page={mealsData.currentPage}
