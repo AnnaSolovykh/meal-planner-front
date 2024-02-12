@@ -102,32 +102,35 @@ const MealsManager = () => {
       });
   };
 
+
   const handleDeleteMeal = (mealId: string | undefined) => {
     if (!mealId) {
       return;
     }
-      setLoading(true);
-      deleteMeal(mealId)
+    setLoading(true);
+    deleteMeal(mealId)
       .then(() => {
-        const filteredMeals = mealsData.meals.filter((meal) => meal._id !== mealId);
-  
-        let currentPage = mealsData.currentPage;
-        if (filteredMeals.length < mealsData.meals.length && currentPage > 1) {
-          currentPage--;
-        }
-          const totalPages = Math.ceil(filteredMeals.length / limit);
+        getMeals(
+          filters.typeFilter,
+          filters.titleFilter,
+          filters.isFavoriteFilter,
+          mealsData.currentPage,
+          limit
+        )
+        .then((response) => {
+          const isNewPageEmpty = response.meals.length === 0;
+          const shouldAdjustPage = mealsData.currentPage > 1 && isNewPageEmpty;
+      
           setMealsData({
-          ...mealsData,
-          meals: filteredMeals,
-          totalPages: totalPages,
-          currentPage: currentPage,
-        });
+            meals: response.meals,
+            totalPages: response.totalPages,
+            currentPage: shouldAdjustPage ? mealsData.currentPage - 1 : mealsData.currentPage,
+          });
+        })
       })
       .catch((error) => {
-        const message =
-          error.response?.data?.msg ||
-          'Deleting the meal failed. Please try again.';
-        setErrorMessage(message);
+        const message = error.response?.data?.msg || 'Deleting the meal failed. Please try again.';
+        setErrorMessage([message]);
       })
       .finally(() => {
         setLoading(false);
